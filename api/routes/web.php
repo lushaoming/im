@@ -12,5 +12,8 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('app.download');
 });
+
+Route::any('chat/bind', 'ChatController@bind');
+Route::any('chat/login', 'ChatController@login');
