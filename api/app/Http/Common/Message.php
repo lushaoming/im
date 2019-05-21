@@ -39,7 +39,7 @@ class Message
      * 发送消息到客户端
      * @param string $type 消息类型
      * @param string $client_id 客户端ID
-     * @param string $message 消息内容
+     * @param mixed $message 消息内容
      * @param array  $other 其他信息
      */
     public function sendMessageToClient($type, $client_id, $message, $other = [])
@@ -51,5 +51,10 @@ class Message
             'timestamp' => time(),
         ];
         self::$gatewayInstance->sendToClient($client_id, json_encode($data));
+    }
+
+    public function getClientIdByUid($uid)
+    {
+        return self::$gatewayInstance->getClientIdByUid($uid);
     }
 }
