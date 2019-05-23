@@ -11,7 +11,7 @@ class Logger
 {
     private static $instance = null;
     // 日志保存路径
-    private $path = '../storage/logs';
+    private $path = ROOT_PATH . '/../storage/logs';
 
     // 禁止实例化
     private function __construct()

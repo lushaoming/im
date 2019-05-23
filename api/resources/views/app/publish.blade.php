@@ -18,6 +18,16 @@
 <div style="text-align: center;width: 100%;">
     <div style="width: 90%; margin: 0 auto;">
         <h3>聊天宝发布地址（安卓版）</h3>
+        <hr>
+        <div>
+            <h4>最新版下载</h4>
+            <p>下载地址1：<a href="{{$list[0]->link_1 ? $list[0]->link_1 :"javascript:;"}}">{{$list[0]->link_1 ? '点击下载' :"暂无地址"}}</a></p>
+            <p>下载地址2：<a href="{{$list[0]->link_2 ? $list[0]->link_2 :"javascript:;"}}">{{$list[0]->link_2 ? '点击下载' :"暂无地址"}}</a></p>
+            <p>发布日期：{{$list[0]->publish_date}}</p>
+            <p>更新说明：{{$list[0]->update_desc}}</p>
+        </div>
+        <hr>
+        <h4>历史版本下载</h4>
         <table class="table">
             <tr>
                 <td>版本</td>
@@ -26,13 +36,15 @@
                 <td>备用地址</td>
                 <td>更新说明</td>
             </tr>
+            @foreach($list as $v)
             <tr>
-                <td>1.0.0</td>
-                <td>2019-05-20</td>
-                <td><a href="http://cdn.lushaoming.site/app/app-debug-1.0.0.apk">点击下载</a></td>
-                <td><a href="http://shannon.unaux.com/app/app-debug-1.0.0.apk">点击下载</a></td>
-                <td>能进行网络请求，暂时只有登录功能</td>
+                <td>{{$v->app_version}}</td>
+                <td>{{$v->publish_date}}</td>
+                <td><a href="{{$v->link_1 ? $v->link_1 :"javascript:;"}}">{{$v->link_1 ? '点击下载' :"暂无地址"}}</a></td>
+                <td><a href="{{$v->link_2 ? $v->link_2 :"javascript:;"}}">{{$v->link_2 ? '点击下载' :"暂无地址"}}</a></td>
+                <td>{{$v->update_desc}}</td>
             </tr>
+            @endforeach
         </table>
     </div>
 </div>
