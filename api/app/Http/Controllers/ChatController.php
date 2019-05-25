@@ -90,6 +90,17 @@ class ChatController extends BaseController
         return json_encode(['code' => 200, 'data' => $list, 'count' => count($list)]);
     }
 
+    /**
+     * @param Request $request
+     * @return false|string
+     */
+    public function checkConnection(Request $request)
+    {
+        $username = $request->input('username');
+        if (WebSocket::userIsOnline($username)) return json_encode(['code' => 0]);
+        else return json_encode(['code' => 1]);
+    }
+
 
 
 }

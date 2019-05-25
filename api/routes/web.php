@@ -23,5 +23,8 @@ Route::any('chat/login', 'LoginController@login');
 Route::any('chat/send-msg', 'ChatController@sendMsg');
 Route::any('chat/pull-msg', 'ChatController@pullMsg');
 Route::any('chat/get-all-chat-msg', 'ChatController@getAllChatMsg');
+Route::any('chat/check-websocket-connection', 'ChatController@checkConnection');
 
 Route::any('app/check-version', 'AppController@checkVersion');
+
+Route::any('love', 'LoveController@index');
