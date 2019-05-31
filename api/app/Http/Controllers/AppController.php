@@ -26,8 +26,14 @@ class AppController extends Controller
     public function checkVersion(Request $request)
     {
         $version = $request->input('version');
-        $newest = DB::table('bas_app_version')->where('status',1)->orderBy('id', 'DESC')->value('app_version');
-        if ($version == $newest) return json_encode(['code' => 1]);
-        return json_encode(['code' => 0, 'newest_version' => $newest]);
+        $newest = DB::table('bas_app_version')->where('status',1)->orderBy('id', 'DESC')->first();
+        if ($version == $newest->app_version) return json_encode(['code' => 1]);
+        return json_encode([
+            'code' => 0,
+            'newest_version' => $newest->app_version,
+            'publish_date' => date('Y-m-d', strtotime($newest->publish_date)),
+            'update_desc' => $newest->update_desc,
+            'download_link' => $newest->link_1 ? $newest->link_1 : $newest->link_2,
+            ]);
     }
 }

@@ -5,10 +5,9 @@
  * Date: 2019/5/8
  * Time: 18:38
  */
-namespace App\Http\Services;
-use App\Http\Common\RedisWriter;
+namespace App\Http\Common;
 
-class Sms
+class SMS
 {
     const VERIFY_CODE_CACHE_KEY = 'sms_verify_';
     const SMS_TIME_LIMIT = 'sms_time_limit_';
@@ -58,7 +57,7 @@ class Sms
             'token' => $token,
         ];
         if ($debug) $param['debug'] = $debug;
-        $url = config('app.sms_domain') . '/src/SMS.php';
+        $url = SMS_DOMAIN . '/src/SMS.php';
         $res = curl($url, true, $param);
         $data = json_decode($res, true);
         if ($data['code'] == 200) return true;

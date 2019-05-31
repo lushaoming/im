@@ -33,11 +33,15 @@ class Chat
     /**
      * 拉取未推送的聊天记录
      * @param $username
+     * @param $halfname
      * @return mixed
      */
-    public static function pullMessage($username)
+    public static function pullMessage($username, $halfname)
     {
-        $list = DB::table('bas_chat')->where('to_user', $username)->where('is_pull', 1)->get();
+        $sql = "SELECT * FROM  `bas_chat` WHERE `to_user`=? AND `from_user`=? AND is_pull=1";
+
+        $list = DB::select($sql, [$username, $halfname]);
+//        $list = DB::table('bas_chat')->where('from_user', $halfname)->where('to_user', $username)->where('is_pull', 1)->get();
         DB::table('bas_chat')->where('to_user', $username)->where('is_pull', 1)->update(['is_pull' => 2]);
         return $list;
     }

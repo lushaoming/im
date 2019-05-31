@@ -16,3 +16,11 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::post('/register', 'NoAuthController@register');
+Route::get('/create-random-name', 'NoAuthController@createRandomName');
+
+Route::post('/upload/image', 'UploadController@image');
+Route::get('/image/check/{path}', 'NoAuthController@checkImageExist');
+Route::get('/image/{path}', 'NoAuthController@getImage');
+
+Route::post('/sms/send', 'NoAuthController@sendSMS');

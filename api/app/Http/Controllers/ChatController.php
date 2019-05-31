@@ -43,13 +43,13 @@ class ChatController extends BaseController
 
     public function sendMsg(Request $request)
     {
-        $fromUser = $_REQUEST['username'];
-        $toUser = $_REQUEST['to_user'];
-        $msgType = $_REQUEST['msg_type'];
-        $msg = $_REQUEST['msg'];
+        $msgId = $request->input("msg_id");
+        $fromUser = $request->input('username');
+        $toUser = $request->input('to_user');
+        $msgType = $request->input('msg_type');
+        $msg = $request->input('msg');
         $fromName = $request->input('from_name');
         $toName = $request->input('to_name');
-        $msgId = Chat::createMsgId();
         $now = date('Y-m-d H:i:s');
         $msgData = [
             'msg_id' => $msgId,
@@ -66,10 +66,12 @@ class ChatController extends BaseController
             $clientId = Message::getInstance()->getClientIdByUid($toUser)[0];
             Message::getInstance()->sendMessageToClient('chat', $clientId, $msgData);
             $msgData['is_pull'] = 2;
+        } else {
+            $msgData['is_pull'] = 1;
         }
 
-        if (Chat::saveChatLog($msgData)) {
-            return json_encode(['code' => 200]);
+        if ($id = Chat::saveChatLog($msgData)) {
+            return json_encode(['code' => 200, 'id' => $id, 'msg_id' => $msgId, 'is_pull' => $msgData['is_pull']]);
         } else {
             return json_encode(['code' => 400]);
         }
@@ -78,7 +80,8 @@ class ChatController extends BaseController
 
     public function pullMsg(Request $request)
     {
-        $list = Chat::pullMessage($this->username);
+        $halfname = $request->input('halfname');
+        $list = Chat::pullMessage($this->username, $halfname);
         return json_encode(['code' => 200, 'list' => $list, 'count' => count($list)]);
     }
 

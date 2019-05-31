@@ -17,6 +17,9 @@ Route::get('debug', function () {
     return view('debug.index');
 });
 
+Route::any('test/excel', 'TestController@excel');
+Route::any('test/exportToFile', 'TestController@exportToFile');
+
 Route::any('chat/bind', 'ChatController@bind');
 Route::any('chat/login', 'LoginController@login');
 
