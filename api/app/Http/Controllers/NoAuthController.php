@@ -120,4 +120,17 @@ class NoAuthController extends Controller
         }
     }
 
+    public function getCarousel()
+    {
+        $now = time();
+        $list = DB::table('bas_carousel')->where('status', 1)->where('start_time', '<', $now)->where('end_time', '>', $now)->get();
+        foreach ($list as &$v) {
+            if (mb_substr($v->image_url, 0, 4) != 'http') {
+                $v->image_url = API_DOMAIN . '/api/image/' . $v->image_url;
+            }
+        }
+
+        ApiCommon::ajaxReturn(200, $list);
+    }
+
 }

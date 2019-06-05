@@ -24,3 +24,8 @@ Route::get('/image/check/{path}', 'NoAuthController@checkImageExist');
 Route::get('/image/{path}', 'NoAuthController@getImage');
 
 Route::post('/sms/send', 'NoAuthController@sendSMS');
+
+
+Route::get('/baiduapi/face-recognition', 'BaiduCloudController@faceRecognition');
+// 轮播图
+Route::get('/get-carousel', 'NoAuthController@getCarousel');

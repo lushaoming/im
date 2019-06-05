@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- 引入 Bootstrap -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="description" content="聊天宝,聊天宝发布页"/>
 
     <!-- HTML5 Shiv 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 -->
     <!-- 注意： 如果通过 file://  引入 Respond.js 文件，则该文件无法起效果 -->
@@ -24,6 +25,7 @@
             <p>下载地址1：<a href="{{$list[0]->link_1 ? $list[0]->link_1 :"javascript:;"}}">{{$list[0]->link_1 ? '点击下载' :"暂无地址"}}</a></p>
             <p>下载地址2：<a href="{{$list[0]->link_2 ? $list[0]->link_2 :"javascript:;"}}">{{$list[0]->link_2 ? '点击下载' :"暂无地址"}}</a></p>
             <p>发布日期：{{$list[0]->publish_date}}</p>
+            <p>软件大小：{{$list[0]->app_size}}M</p>
             <p>更新说明：{{$list[0]->update_desc}}</p>
         </div>
         <hr>

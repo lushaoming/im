@@ -27,6 +27,7 @@ class UploadController extends Controller
             $output = [
                 'extension' => $extension,
                 'path' => $path,
+                'path_base64' => base64_encode($path),
                 'full_path' => API_DOMAIN . '/api/image/' . base64_encode($path),
             ];
             ApiCommon::ajaxReturn(OK_CODE, $output);
