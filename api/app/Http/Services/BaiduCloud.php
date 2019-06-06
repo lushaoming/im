@@ -9,6 +9,7 @@ namespace App\Http\Services;
 
 use App\Http\Common\ApiCommon;
 use Illuminate\Support\Facades\DB;
+use function Symfony\Component\VarDumper\Dumper\esc;
 
 class BaiduCloud
 {
@@ -52,6 +53,7 @@ class BaiduCloud
     {
         $imageData = file_get_contents($path);
         $imageBase64 = base64_encode($imageData);
+        var_dump(mb_strlen($imageBase64));
         $url = $this->apiDomain . '/rest/2.0/face/v2/detect?access_token=' . $this->getAccessToken();
         $headers = ['Content-Type:application/x-www-form-urlencoded'];
         $params = ['image' => $imageBase64, 'max_face_num' => 1, 'face_fields' => 'age,beauty,expression,faceshape,gender,glasses,landmark,race,qualities'];
@@ -61,20 +63,54 @@ class BaiduCloud
         return json_decode($res, true);
     }
 
+    public function faceDetectUseBase64($username, $base64)
+    {
+        $url = $this->apiDomain . '/rest/2.0/face/v2/detect?access_token=' . $this->getAccessToken();
+        $headers = ['Content-Type:application/x-www-form-urlencoded'];
+        $params = ['image' => $base64, 'max_face_num' => 1, 'face_fields' => 'age,beauty,expression,faceshape,gender,glasses,landmark,race,qualities'];
+        $res = ApiCommon::httpCurl($url, true, $params, $headers);
+
+        // 保存图片
+        $basePath = ROOT_PATH . '/../storage/app/public/';
+        $path = 'images/'.date('Y').'/'.date('m') . '/'.date('d') . '/';
+        if (!file_exists($basePath.$path)) {
+            mkdir($basePath.$path, 0777, true);
+        }
+        $filename = BaiduCloud::getInstance()->getImageName();
+        file_put_contents($basePath.$path.$filename, base64_decode($base64));
+        $imageId = Image::saveImage($path.$filename);
+
+        $id = $this->saveLog($username, self::$faceDetect, $res, $imageId);
+        $data = json_decode($res, true);
+        $data['log_id'] = $id;
+        return $data;
+    }
+
     /**
      * 保存日志
      * @param string $username  用户名
      * @param int    $type      类型
      * @param string $data      数据
+     * @return int 记录ID
      */
-    public function saveLog($username, $type, $data)
+    public function saveLog($username, $type, $data, $imageId = null)
     {
+        $code = create_nonce(6);
         $insertData = [
             'username' => $username,
             't_type' => $type,
             'data' => $data,
-            'create_time' => date('Y-m-d H:i:s')
+            'create_time' => date('Y-m-d H:i:s'),
+            'image_id' => $imageId,
+            'code' => $code
         ];
-        DB::table('bas_baidu_api_log')->insertGetId($insertData);
+        DB::table('bas_baidu_api_log')->insert($insertData);
+        return $code;
+    }
+
+    public function getImageName()
+    {
+
+        return time().create_nonce(4) . '.jpg';
     }
 }

@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
+Route::any('test', 'TestController@index');
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -25,7 +25,11 @@ Route::get('/image/{path}', 'NoAuthController@getImage');
 
 Route::post('/sms/send', 'NoAuthController@sendSMS');
 
-
-Route::get('/baiduapi/face-recognition', 'BaiduCloudController@faceRecognition');
+// 人脸检测-图片上传
+Route::any('/baiduapi/face-recognition', 'BaiduCloudController@faceRecognition');
+// 人脸检测-图片base64
+Route::any('/baiduapi/face-recognition-base64', 'BaiduCloudController@faceRecognitionBase64');
 // 轮播图
 Route::get('/get-carousel', 'NoAuthController@getCarousel');
+
+Route::get('/article/{id}', 'ArticleController@index');

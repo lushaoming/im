@@ -7,6 +7,8 @@
  */
 namespace App\Http\Services;
 
+use Illuminate\Support\Facades\DB;
+
 class Image
 {
     public static function getFullPath($path)
@@ -31,5 +33,10 @@ class Image
     public static function delete($path)
     {
         @unlink($path);
+    }
+
+    public static function saveImage($path)
+    {
+        return DB::table('bas_image')->insertGetId(['path' => $path]);
     }
 }

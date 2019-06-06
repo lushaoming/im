@@ -18,11 +18,26 @@ class BaiduCloudController extends Controller
         $pathBase64 = ApiCommon::get_not_empty_var('path_base64', '图片为空');
         $imagePath = base64_decode($pathBase64);
         $imageFullPath = Image::getFullPath($imagePath);
+//        $imageFullPath = ApiCommon::get_not_empty_var('image_base64', '图片为空');
+
         if (!file_exists($imageFullPath)) {
             ApiCommon::ajaxReturn(400, [], '图片为空');
         }
         $username = ApiCommon::get_not_empty_var('username');
         $res = BaiduCloud::getInstance()->faceDetect($username, $imageFullPath);
+        ApiCommon::ajaxReturn(200, $res);
+    }
+
+    public function faceRecognitionBase64()
+    {
+        $imageBase64 = ApiCommon::get_not_empty_var('image_base64', '图片为空');
+
+        if (!$imageBase64) {
+            ApiCommon::ajaxReturn(400, [], '图片为空');
+        }
+        $username = ApiCommon::get_not_empty_var('username');
+        $res = BaiduCloud::getInstance()->faceDetectUseBase64($username, $imageBase64);
+
         ApiCommon::ajaxReturn(200, $res);
     }
 }
